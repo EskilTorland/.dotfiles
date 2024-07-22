@@ -64,11 +64,6 @@ require("lazy").setup({
 			{ "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
 		},
 	},
-	"seblj/roslyn.nvim",
-	"theprimeagen/harpoon",
-	"mbbill/undotree",
-	"tpope/vim-fugitive",
-	"nvim-treesitter/nvim-treesitter-context",
 
 	{
 		"nvimtools/none-ls.nvim",
@@ -77,7 +72,6 @@ require("lazy").setup({
 		},
 	},
 
-	"zbirenbaum/copilot.lua",
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v3.x",
@@ -97,4 +91,11 @@ require("lazy").setup({
 	-- Snippets
 	{ "L3MON4D3/LuaSnip" },
 	{ "rafamadriz/friendly-snippets" },
+
+	"seblj/roslyn.nvim",
+	"theprimeagen/harpoon",
+	"mbbill/undotree",
+	"tpope/vim-fugitive",
+	"nvim-treesitter/nvim-treesitter-context",
+	"zbirenbaum/copilot.lua",
 })
