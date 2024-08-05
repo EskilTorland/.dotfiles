@@ -1,8 +1,15 @@
 local lsp = require("lsp-zero")
 
 lsp.on_attach(function(client, bufnr)
+	if vim.bo[bufnr].filetype == "terraform" then
+		client.server_capabilities.semanticTokensProvider = nil
+	end
+
 	local opts = { buffer = bufnr, remap = false }
 
+	vim.keymap.set("n", "<leader>h", function()
+		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+	end, opts)
 	vim.keymap.set("n", "gd", function()
 		vim.lsp.buf.definition()
 	end, opts)
@@ -48,6 +55,16 @@ require("mason-lspconfig").setup({
 		tsserver = function()
 			require("lspconfig").tsserver.setup({
 				init_options = {
+					preferences = {
+						includeInlayParameterNameHints = "all",
+						includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+						includeInlayFunctionParameterTypeHints = true,
+						includeInlayVariableTypeHints = true,
+						includeInlayPropertyDeclarationTypeHints = true,
+						includeInlayFunctionLikeReturnTypeHints = true,
+						includeInlayEnumMemberValueHints = true,
+						importModuleSpecifierPreference = "non-relative",
+					},
 					plugins = {
 						{
 							name = "@styled/typescript-styled-plugin",
