@@ -12,6 +12,7 @@
 	autoSetupRemote = true
 [core]
     pager = delta
+	excludesfile = /Users/eskil/.gitignore_global
 
 [interactive]
     diffFilter = delta --color-only

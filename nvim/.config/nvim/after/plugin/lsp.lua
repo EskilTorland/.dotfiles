@@ -52,8 +52,8 @@ require("mason-lspconfig").setup({
 			require("lspconfig")[server_name].setup({})
 		end,
 
-		tsserver = function()
-			require("lspconfig").tsserver.setup({
+		ts_ls = function()
+			require("lspconfig").ts_ls.setup({
 				init_options = {
 					preferences = {
 						includeInlayParameterNameHints = "all",
@@ -86,40 +86,50 @@ require("mason-lspconfig").setup({
 				},
 			})
 		end,
+
+		shopify_theme_ls = function()
+			require("lspconfig").shopify_theme_ls.setup({
+				root_dir = function(fname)
+					return vim.loop.cwd() -- Use the current working directory as the root
+				end,
+			})
+		end,
 	},
 })
 
 local cmp = require("cmp")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+
 local cmp_action = lsp.cmp_action()
 
 require("luasnip.loaders.from_vscode").lazy_load()
-
 cmp.setup({
-	sources = {
-		{ name = "path" },
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-		{ name = "buffer" },
-		{ name = "nvim_lua" },
-	},
-
-	window = {
-		documentation = cmp.config.window.bordered(),
-	},
-
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
 		end,
 	},
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+		{ name = "nvim_lua" },
+		{ name = "luasnip" },
+	}, {
+		{ name = "buffer" },
+		{ name = "path" },
+	}),
+	window = {
+		documentation = cmp.config.window.bordered(),
+	},
 	mapping = cmp.mapping.preset.insert({
-		["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-		["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+		["<C-p>"] = cmp.mapping.select_prev_item(),
+		["<C-n>"] = cmp.mapping.select_next_item(),
 		["<Enter>"] = cmp.mapping.confirm({ select = true }),
 		["<C-Space>"] = cmp.mapping.complete(),
 	}),
 	formatting = lsp.cmp_format({ details = false }),
 })
+
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError" })
 vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })

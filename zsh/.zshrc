@@ -3,6 +3,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+if [ -d "$HOME/.local/bin" ]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+export AIDER_DARK_MODE=true
+
+
+if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
+  export PATH=/opt/homebrew/opt/ruby/bin:$PATH
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi
+
 # Oh My Zsh configuration
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
@@ -18,6 +30,8 @@ source $ZSH/oh-my-zsh.sh
 alias vim="nvim"
 alias vi="nvim"
 alias tf="terraform"
+alias bbp="cd ~/Moller/bruktbilportalen"
+alias bb="cd ~/Moller/bruktbilsalg"
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
@@ -96,3 +110,13 @@ export LC_ALL=en_US.UTF-8
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/eskil/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+DOTFILES_DIR="$HOME/.dotfiles"  
+if [ -f "$DOTFILES_DIR/.env" ]; then
+    source "$DOTFILES_DIR/.env"
+fi
+

@@ -13,12 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 require("lazy").setup({
-
-	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { { "nvim-lua/plenary.nvim" } },
-	},
-
+	-- Core UI and Functionality
 	{
 		"sainnhe/gruvbox-material",
 		lazy = false,
@@ -30,22 +25,24 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"nvim-treesitter/nvim-treesitter",
-
-		build = function()
-			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-			ts_update()
-		end,
-	},
-
-	{
 		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 
+	-- Navigation and Search
 	{
-		"folke/trouble.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		"nvim-telescope/telescope.nvim",
+		cmd = "Telescope",
+		keys = {
+			{ "<leader>ff", "<cmd>Telescope find_files<cr>" },
+			{ "<leader>fg", "<cmd>Telescope live_grep<cr>" },
+		},
+		dependencies = { { "nvim-lua/plenary.nvim" } },
+	},
+	{
+		"theprimeagen/harpoon",
+		event = "VeryLazy",
 	},
 	{
 		"christoomey/vim-tmux-navigator",
@@ -65,37 +62,103 @@ require("lazy").setup({
 		},
 	},
 
+	-- Code Analysis and Syntax
+	{
+		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPost", "BufNewFile" },
+		build = function()
+			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+			ts_update()
+		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		event = { "BufReadPost", "BufNewFile" },
+	},
+	{
+		"folke/trouble.nvim",
+		cmd = { "TroubleToggle", "Trouble" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+
+	-- LSP and Completion
+	{
+		"VonHeikemen/lsp-zero.nvim",
+		branch = "v3.x",
+		dependencies = {
+			{ "neovim/nvim-lspconfig" },
+			{ "williamboman/mason.nvim" },
+			{ "williamboman/mason-lspconfig.nvim" },
+			-- Autocompletion
+			{ "hrsh7th/nvim-cmp" },
+			{ "hrsh7th/cmp-buffer" },
+			{ "hrsh7th/cmp-path" },
+			{ "saadparwaiz1/cmp_luasnip" },
+			{ "hrsh7th/cmp-nvim-lsp" },
+			{ "hrsh7th/cmp-nvim-lua" },
+		},
+	},
 	{
 		"nvimtools/none-ls.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"nvimtools/none-ls-extras.nvim",
 		},
 	},
+	{
+		"seblj/roslyn.nvim",
+		ft = { "cs", "vb" },
+	},
+
+	-- Git Integration
+	{
+		"tpope/vim-fugitive",
+		cmd = { "Git", "Gstatus", "Gblame", "Gpush", "Gpull" },
+	},
+
+	-- Editing Support
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+	},
+	{
+		"L3MON4D3/LuaSnip",
+		event = "InsertEnter",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+		},
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		event = "InsertEnter",
+	},
+	{
+		"mbbill/undotree",
+		cmd = "UndotreeToggle",
+	},
 
 	{
-		"VonHeikemen/lsp-zero.nvim",
-		branch = "v3.x",
+		"joshuavial/aider.nvim",
+		opts = {
+			auto_manage_context = true,
+			default_bindings = true,
+			debug = false,
+		},
 	},
-	{ "neovim/nvim-lspconfig" },
-	{ "williamboman/mason.nvim" },
-	{ "williamboman/mason-lspconfig.nvim" },
 
-	-- Autocompletion
-	{ "hrsh7th/nvim-cmp" },
-	{ "hrsh7th/cmp-buffer" },
-	{ "hrsh7th/cmp-path" },
-	{ "saadparwaiz1/cmp_luasnip" },
-	{ "hrsh7th/cmp-nvim-lsp" },
-	{ "hrsh7th/cmp-nvim-lua" },
-
-	-- Snippets
-	{ "L3MON4D3/LuaSnip" },
-	{ "rafamadriz/friendly-snippets" },
-
-	"seblj/roslyn.nvim",
-	"theprimeagen/harpoon",
-	"mbbill/undotree",
-	"tpope/vim-fugitive",
-	"nvim-treesitter/nvim-treesitter-context",
-	"zbirenbaum/copilot.lua",
+	-- AI and Code Assistance
+	-- {
+	-- 	"olimorris/codecompanion.nvim",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 		"hrsh7th/nvim-cmp",
+	-- 		"nvim-telescope/telescope.nvim",
+	-- 		"echasnovski/mini.nvim",
+	-- 		{ "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
+	-- 		{ "stevearc/dressing.nvim", opts = {} },
+	-- 	},
+	-- 	config = true,
+	-- },
 })
