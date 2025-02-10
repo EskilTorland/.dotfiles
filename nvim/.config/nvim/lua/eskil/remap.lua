@@ -19,3 +19,6 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 vim.keymap.set("n", "ø", "[", { remap = true })
 vim.keymap.set("n", "æ", "]", { remap = true })
+
+-- Exit terminal mode with Escape key
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
