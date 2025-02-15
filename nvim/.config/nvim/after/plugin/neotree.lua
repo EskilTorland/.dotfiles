@@ -2,6 +2,15 @@ require("neo-tree").setup({
     close_if_last_window = false,
     enable_git_status = true,
     enable_diagnostics = true,
+    popup_border_style = "single",
+    default_component_configs = {
+        indent = {
+            with_markers = true,
+            indent_marker = "│",
+            last_indent_marker = "└",
+            indent_size = 2,
+        },
+    },
     window = {
         position = "left",
         width = 30,
