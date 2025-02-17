@@ -1,0 +1,10 @@
+theme = GruvboxDark
+background-opacity = 0.8
+background-blur = 6
+shell-integration-features = no-cursor
+cursor-style-blink = false
+cursor-style = block
+font-family = MesloLGSDZ Nerd Font Mono Regular
+macos-titlebar-style = hidden
+maximize
+keybind = global:opt+space=toggle_quick_terminal
