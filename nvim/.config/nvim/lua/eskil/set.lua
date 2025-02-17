@@ -35,3 +35,13 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt.expandtab = true -- or any other specific settings
 	end,
 })
+
+vim.g.netrw_preview = 1
+
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = "netrw",
+--     callback = function()
+--         local map_opts ={noremap = true,
+--         silent = true,
+--         buffer = true}
+-- })

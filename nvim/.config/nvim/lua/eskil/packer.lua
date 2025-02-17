@@ -40,10 +40,7 @@ require("lazy").setup({
 		},
 		dependencies = { { "nvim-lua/plenary.nvim" } },
 	},
-	{
-		"theprimeagen/harpoon",
-		event = "VeryLazy",
-	},
+
 	{
 		"christoomey/vim-tmux-navigator",
 		cmd = {
@@ -139,11 +136,27 @@ require("lazy").setup({
 	},
 
 	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+	},
+
+	{
 		"joshuavial/aider.nvim",
 		opts = {
 			auto_manage_context = true,
 			default_bindings = true,
 			debug = false,
+		},
+	},
+
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
 		},
 	},
 

@@ -9,6 +9,8 @@ fi
 
 export AIDER_DARK_MODE=true
 
+unsetopt CORRECT_ALL
+unsetopt CORRECT
 
 if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
   export PATH=/opt/homebrew/opt/ruby/bin:$PATH
@@ -85,6 +87,46 @@ _fzf_comprun() {
   esac
 }
 
+ function projects() {                                                                                                                       
+     local project_dir                                                                                                                       
+     project_dir=$(fd --hidden --type d --glob .git ~/Moller/ 2>/dev/null |                                                                  
+         sed 's|/\.git/*$||' |                                                                                                               
+         fzf --preview '                                                                                                                     
+             echo -e "\033[1;36m# Project: \033[1;33m$(basename {})\033[0m"                                                                  
+             echo -e "\033[1;36m=====================\033[0m"                                                                                
+                                                                                                                                             
+             echo -e "\n\033[1;36m# Directory Structure:\033[0m"                                                                             
+             echo -e "\033[1;36m====================\033[0m"                                                                                 
+             eza --tree --color=always --level=1 {}                                                                                          
+                                                                                                                                             
+             echo -e "\n\033[1;36m# Git Status:\033[0m"                                                                                      
+             echo -e "\033[1;36m============\033[0m"                                                                                         
+             git -C {} status -s                                                                                                             
+                                                                                                                                             
+             echo -e "\n\033[1;36m# Current Branch:\033[0m"                                                                                  
+             echo -e "\033[1;36m===============\033[0m"                                                                                      
+             git -C {} branch')                                                                                                              
+                                                                                                                                             
+         if [ -n "$project_dir" ]; then                                                                  
+         cd "$project_dir"                                                                           
+                                                                                                     
+         if read -q 'choice?Create/attach tmux session? (y/n): '; then                               
+             echo # Add a newline after the response                                                 
+             local session_name=$(basename "$project_dir")                                           
+             # Check if we're already in a tmux session                                              
+             if [ -n "$TMUX" ]; then                                                                 
+                 # We're in a tmux session, create a new one                                         
+                tmux new -d -s "$session_name" 2>/dev/null                                  
+                tmux switch-client -t "$session_name"                                           
+             else                                                                                    
+                tmux new-session -A -s "$session_name"
+             fi                                                                                      
+         fi                                                                                          
+     fi                                                                                              
+ }  
+
+bindkey -s 'π' 'projects\n'
+
 # Initialize zoxide
 eval "$(zoxide init --cmd cd zsh)"
 
@@ -119,4 +161,3 @@ DOTFILES_DIR="$HOME/.dotfiles"
 if [ -f "$DOTFILES_DIR/.env" ]; then
     source "$DOTFILES_DIR/.env"
 fi
-

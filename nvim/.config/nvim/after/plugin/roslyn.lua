@@ -1,3 +1,18 @@
+-- Add this variable to track CodeLens state
+local codelens_enabled = true
+
+-- Add this function to toggle CodeLens
+local function toggle_codelens()
+	codelens_enabled = not codelens_enabled
+	if codelens_enabled then
+		vim.lsp.codelens.refresh()
+	else
+		-- Clear existing CodeLens
+		vim.lsp.codelens.clear()
+	end
+	print("CodeLens " .. (codelens_enabled and "enabled" or "disabled"))
+end
+
 require("roslyn").setup({
 
 	config = {
@@ -16,6 +31,9 @@ require("roslyn").setup({
 				dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
 				dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
 			},
+			["csharp|codelens"] = {
+				dotnet_enable_references_code_lens = true,
+			},
 		},
 	},
 	exe = {
@@ -25,3 +43,13 @@ require("roslyn").setup({
 
 	filewatching = true,
 })
+
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+	callback = function()
+		if codelens_enabled then
+			vim.lsp.codelens.refresh()
+		end
+	end,
+})
+
+vim.keymap.set("n", "<leader>l", toggle_codelens, { desc = "Toggle CodeLens" })
