@@ -4,7 +4,9 @@ background-blur = 6
 shell-integration-features = no-cursor
 cursor-style-blink = false
 cursor-style = block
-font-family = MesloLGSDZ Nerd Font Mono Regular
+font-family = MesloLGSDZ Nerd Font Mono
 macos-titlebar-style = hidden
 maximize
 keybind = global:opt+space=toggle_quick_terminal
+font-feature = -calt                                                                                 
+
