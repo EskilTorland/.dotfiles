@@ -108,7 +108,6 @@ _fzf_comprun() {
              git -C {} branch')                                                                                                              
                                                                                                                                              
          if [ -n "$project_dir" ]; then                                                                  
-         cd "$project_dir"                                                                           
                                                                                                      
          if read -q 'choice?Create/attach tmux session? (y/n): '; then                               
              echo # Add a newline after the response                                                 
@@ -116,11 +115,13 @@ _fzf_comprun() {
              # Check if we're already in a tmux session                                              
              if [ -n "$TMUX" ]; then                                                                 
                  # We're in a tmux session, create a new one                                         
-                tmux new -d -s "$session_name" 2>/dev/null                                  
+                tmux new -d -s "$session_name" -c "$project_dir" 2>/dev/null                                  
                 tmux switch-client -t "$session_name"                                           
              else                                                                                    
-                tmux new-session -A -s "$session_name"
+                tmux new-session -A -s "$session_name" -c "$project_dir"
              fi                                                                                      
+         else 
+             cd "$project_dir"
          fi                                                                                          
      fi                                                                                              
  }  
