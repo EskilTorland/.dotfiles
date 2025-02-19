@@ -4,7 +4,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			local colors = {
-				bg = "#202328",
+				bg = "none",
 				fg = "#bbc2cf",
 				yellow = "#ECBE7B",
 				cyan = "#008080",
@@ -78,16 +78,37 @@ return {
 
 			ins_left({
 				function()
-					return "▊"
+					return " "
 				end,
-				color = { fg = colors.blue }, -- Sets highlighting of component
-				padding = { left = 0, right = 1 }, -- We don't need space before this
+				padding = { left = 1, right = 0 },
 			})
 
 			ins_left({
 				-- mode component
 				function()
-					return ""
+					local mode_map = {
+						n = "Normal",
+						i = "Insert",
+						v = "Visual",
+						["\22"] = "V-Block",
+						V = "V-Line",
+						c = "Command",
+						no = "Normal",
+						s = "Select",
+						S = "S-Line",
+						["\19"] = "S-Block",
+						ic = "Insert",
+						R = "Replace",
+						Rv = "V-Replace",
+						cv = "Ex",
+						ce = "Ex",
+						r = "Prompt",
+						rm = "More",
+						["r?"] = "Confirm",
+						["!"] = "Shell",
+						t = "Terminal",
+					}
+					return mode_map[vim.fn.mode()] .. " "
 				end,
 				color = function()
 					-- auto change color according to neovims mode
@@ -95,13 +116,13 @@ return {
 						n = colors.red,
 						i = colors.green,
 						v = colors.blue,
-						[""] = colors.blue,
+						[""] = colors.blue,
 						V = colors.blue,
 						c = colors.magenta,
 						no = colors.red,
 						s = colors.orange,
 						S = colors.orange,
-						[""] = colors.orange,
+						[""] = colors.orange,
 						ic = colors.yellow,
 						R = colors.violet,
 						Rv = colors.violet,
@@ -119,25 +140,23 @@ return {
 			})
 
 			ins_left({
-				-- filesize component
-				"filesize",
-				cond = conditions.buffer_not_empty,
-			})
-
-			ins_left({
 				"filename",
 				cond = conditions.buffer_not_empty,
 				color = { fg = colors.magenta, gui = "bold" },
 			})
 
-			ins_left({ "location" })
+			ins_left({
+				-- filesize component
+				"filetype",
+				cond = conditions.buffer_not_empty,
+			})
 
-			ins_left({ "progress", color = { fg = colors.fg, gui = "bold" } })
+			ins_left({ "location" })
 
 			ins_left({
 				"diagnostics",
 				sources = { "nvim_diagnostic" },
-				symbols = { error = " ", warn = " ", info = " " },
+				symbols = { error = " ", warn = " ", info = " ", hint = " " },
 				diagnostics_color = {
 					error = { fg = colors.red },
 					warn = { fg = colors.yellow },
@@ -147,11 +166,11 @@ return {
 
 			-- Insert mid section. You can make any number of sections in neovim :)
 			-- for lualine it's any number greater then 2
-			ins_left({
-				function()
-					return "%="
-				end,
-			})
+			-- ins_left({
+			-- 	function()
+			-- 		return "%="
+			-- 	end,
+			-- })
 
 			ins_left({
 				-- Lsp server name .
@@ -185,7 +204,7 @@ return {
 			ins_right({
 				"fileformat",
 				fmt = string.upper,
-				icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+				icons_enabled = true,
 				color = { fg = colors.green, gui = "bold" },
 			})
 
@@ -209,13 +228,11 @@ return {
 
 			ins_right({
 				function()
-					return "▊"
+					return " "
 				end,
-				color = { fg = colors.blue },
-				padding = { left = 1 },
+				padding = { left = 0, right = 1 },
 			})
 
-			-- Now don't forget to initialize lualine
 			require("lualine").setup(config)
 		end,
 	},
