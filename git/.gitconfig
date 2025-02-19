@@ -7,7 +7,7 @@
 	process = git-lfs filter-process
 	required = true
 [core]
-	autocrlf = true
+	autocrlf = input
 [push]
 	autoSetupRemote = true
 [core]

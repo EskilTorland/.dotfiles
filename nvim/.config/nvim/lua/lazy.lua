@@ -1,1 +1,0 @@
--- This file is intentionally empty as lazy.nvim is now initialized in init.lua
