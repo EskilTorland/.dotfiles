@@ -20,6 +20,7 @@ return {
 				vim.api.nvim_set_hl(0, "NeoTreeNormalNC", { bg = "none" })
 				vim.api.nvim_set_hl(0, "NeoTreeEndOfBuffer", { bg = "none" })
 				vim.api.nvim_set_hl(0, "NeoTreeFloat", { bg = "none" })
+				vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
 			end
 
 			ColorMyPencils()
