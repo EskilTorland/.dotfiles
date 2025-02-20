@@ -9,4 +9,5 @@ macos-titlebar-style = hidden
 maximize
 keybind = global:opt+space=toggle_quick_terminal
 font-feature = -calt                                                                                 
+font-size = 13
 

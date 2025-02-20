@@ -1,7 +1,6 @@
 --TODO: Swap with oil.nvim
 return {
 	{
-		print("HO<"),
 		"nvimtools/none-ls.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
@@ -15,7 +14,7 @@ return {
 				sources = {
 					null_ls.builtins.formatting.prettier.with({ command = "./node_modules/.bin/prettier" }),
 					null_ls.builtins.formatting.stylua,
-					require("none-ls.diagnostics.eslint"),
+				    	require("none-ls.diagnostics.eslint"),
 					require("none-ls.code_actions.eslint"),
 
 					--Liquid
