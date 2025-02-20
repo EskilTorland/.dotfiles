@@ -1,3 +1,5 @@
+--TODO: Look over keybinds for best practices, add gutter signs, figure out minidiff
+--add snacks.nvim look at defaults for inspo eg lazy, mini etc
 return {
 	{
 		"neovim/nvim-lspconfig",
