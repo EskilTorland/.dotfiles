@@ -34,6 +34,31 @@ return {
                 return orig_util_open_floating_preview(contents, syntax, opts, ...)
             end
 
+            local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+            for type, icon in pairs(signs) do
+                local hl = "DiagnosticSign" .. type
+                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+            end
+
+            vim.diagnostic.config({
+                virtual_text = {
+                    prefix = function(diagnostic)
+                        if diagnostic.severity == vim.diagnostic.severity.ERROR then
+                            return ""
+                        elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+                            return ""
+                        elseif diagnostic.severity == vim.diagnostic.severity.INFO then
+                            return ""
+                        elseif diagnostic.severity == vim.diagnostic.severity.HINT then
+                            return ""
+                        end
+                        return "■"
+                    end,
+                },
+                signs = true,
+                update_in_insert = true,
+            })
+
             require("mason").setup({})
             require("mason-lspconfig").setup({
                 automatic_installation = {},
@@ -74,7 +99,7 @@ return {
 
                     shopify_theme_ls = function()
                         require("lspconfig").shopify_theme_ls.setup({
-                            root_dir = function(fname)
+                            root_dir = function()
                                 return vim.loop.cwd() -- Use the current working directory as the root
                             end,
                         })
