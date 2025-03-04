@@ -17,6 +17,10 @@ if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
   export PATH=`gem environment gemdir`/bin:$PATH
 fi
 
+if [ -d "/opt/homebrew/bin" ]; then
+    export PATH=/opt/homebrew/bin:$PATH
+fi
+
 # Oh My Zsh configuration
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"

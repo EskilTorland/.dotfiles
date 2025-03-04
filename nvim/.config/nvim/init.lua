@@ -15,12 +15,11 @@ vim.opt.rtp:prepend(lazypath)
 -- Set leader key before lazy setup
 vim.g.mapleader = " "
 
+require("set")
+require("remap")
 -- Initialize lazy.nvim
 require("lazy").setup({
     spec = {
         { import = "plugins" },
     },
 })
-
-require("set")
-require("remap")
