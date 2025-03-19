@@ -16,6 +16,11 @@ return {
 				["<CR>"] = { "select_and_accept", "fallback" },
 			},
 			cmdline = {
+				completion = {
+					menu = {
+						auto_show = true,
+					},
+				},
 				keymap = {
 					preset = "default",
 				},

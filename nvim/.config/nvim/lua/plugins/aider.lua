@@ -18,7 +18,7 @@ return {
 			})
 
 			-- Set up custom keybinding that opens aider in a vertical split
-			vim.api.nvim_set_keymap("n", "<leader>a", ":AiderOpen<CR>", { noremap = true, silent = true })
+			vim.api.nvim_set_keymap("n", "<leader>ao", ":AiderOpen<CR>", { noremap = true, silent = true })
 		end,
 	},
 }
