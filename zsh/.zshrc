@@ -93,7 +93,7 @@ _fzf_comprun() {
 
  function projects() {                                                                                                                       
      local project_dir                                                                                                                       
-     project_dir=$(fd --hidden --type d --glob .git ~/Moller/ 2>/dev/null |                                                                  
+     project_dir=$(fd --hidden --type d --glob .git ~/Moller/ ~/.dotfiles 2>/dev/null |                                                                  
          sed 's|/\.git/*$||' |                                                                                                               
          fzf --preview '                                                                                                                     
              echo -e "\033[1;36m# Project: \033[1;33m$(basename {})\033[0m"                                                                  
