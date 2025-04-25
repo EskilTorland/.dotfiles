@@ -21,6 +21,7 @@ return {
 					},
 				},
 			},
+			gitbrowse = {},
 		},
 		keys = {
 			{
@@ -107,6 +108,13 @@ return {
 					Snacks.picker.command_history()
 				end,
 				desc = "Command History",
+			},
+			{
+				"<leader>go",
+				function()
+					Snacks.gitbrowse()
+				end,
+				desc = "Github file",
 			},
 		},
 	},
