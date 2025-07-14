@@ -1,24 +1,17 @@
 return {
 	{
-		"greggh/claude-code.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim", -- Required for git operations
+		"coder/claudecode.nvim",
+		config = true,
+		keys = {
+			{ "<leader>a", nil, desc = "AI/Claude Code" },
+			{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+			{ "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+			{
+				"<leader>as",
+				"<cmd>ClaudeCodeTreeAdd<cr>",
+				desc = "Add file",
+				ft = { "NvimTree", "neo-tree" },
+			},
 		},
-		config = function()
-			require("claude-code").setup({
-				window = {
-					position = "vertical", -- Make Claude use a vertical split
-					split_ratio = 0.3, -- Width ratio for the vertical split
-				},
-				keymaps = {
-					toggle = {
-						normal = "<leader>ac", -- Leader+ac in normal mode
-						terminal = "<C-,>", -- Ctrl+comma in terminal mode
-					},
-					window_navigation = true, -- Enable window navigation keymaps
-					scrolling = true, -- Enable scrolling keymaps
-				},
-			})
-		end,
 	},
 }

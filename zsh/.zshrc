@@ -38,6 +38,9 @@ alias vi="nvim"
 alias tf="terraform"
 alias bbp="cd ~/Moller/bruktbilportalen"
 alias bb="cd ~/Moller/bruktbilsalg"
+ghd() {
+    gh pr diff "$@" | delta
+}
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
