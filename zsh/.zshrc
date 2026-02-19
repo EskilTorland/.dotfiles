@@ -169,3 +169,4 @@ DOTFILES_DIR="$HOME/.dotfiles"
 if [ -f "$DOTFILES_DIR/.env" ]; then
     source "$DOTFILES_DIR/.env"
 fi
+export ASPNETCORE_ENVIRONMENT=Development

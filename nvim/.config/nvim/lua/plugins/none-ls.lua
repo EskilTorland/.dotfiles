@@ -14,8 +14,14 @@ return {
 				sources = {
 					null_ls.builtins.formatting.prettier.with({ command = "./node_modules/.bin/prettier" }),
 					null_ls.builtins.formatting.stylua,
-				    	require("none-ls.diagnostics.eslint"),
+					require("none-ls.diagnostics.eslint"),
 					require("none-ls.code_actions.eslint"),
+
+					--YAML
+					null_ls.builtins.formatting.prettier.with({
+						filetypes = { "yaml" },
+						extra_args = { "--tab-width", "2" },
+					}),
 
 					--Liquid
 					null_ls.builtins.formatting.prettier.with({
@@ -28,6 +34,8 @@ return {
 							"@shopify/prettier-plugin-liquid", -- Uses the Liquid plugin
 						},
 					}),
+
+					-- null_ls.builtins.formatting.csharpier,
 				},
 			})
 			vim.api.nvim_create_autocmd("BufWritePre", {

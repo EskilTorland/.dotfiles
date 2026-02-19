@@ -40,6 +40,8 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.g.netrw_preview = 1
 
+vim.highlight.priorities.semantic_tokens = 95
+
 -- vim.api.nvim_create_autocmd("FileType", {
 --     pattern = "netrw",
 --     callback = function()
