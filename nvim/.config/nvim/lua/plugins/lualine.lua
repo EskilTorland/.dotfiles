@@ -165,7 +165,9 @@ return {
 			})
 
 			ins_left({
-				"lsp_status",
+				function()
+					return vim.lsp.status()
+				end,
 				icon = " LSP:",
 				color = { fg = "#ffffff", gui = "bold" },
 			})

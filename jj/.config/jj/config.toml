@@ -1,0 +1,109 @@
+# Jujutsu (jj) configuration
+# Docs: https://jj-vcs.github.io/jj/latest/config/
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+# ──────────────────────────────────────────────
+# Identity
+# ──────────────────────────────────────────────
+[user]
+name = "Eskil Torland"
+email = "eskil.torland@gmail.com"
+
+# ──────────────────────────────────────────────
+# UI / Editor / Pager
+# ──────────────────────────────────────────────
+[ui]
+# Use Neovim for editing commit descriptions
+editor = "nvim"
+
+# Use delta as the pager (matches git config).
+# delta requires git-style diffs, so we set diff-formatter accordingly.
+pager = "delta"
+diff-formatter = ":git"
+
+# Nicer graph rendering in log output
+graph.style = "curved"
+
+# Wrap log output to terminal width
+log-word-wrap = true
+
+# Run `jj status` when you type bare `jj` with no subcommand
+default-command = "status"
+
+# ──────────────────────────────────────────────
+# Templates
+# ──────────────────────────────────────────────
+
+# When using `jj git push --change @`, the auto-generated bookmark name
+# follows this template. Default is "push-<change_id_prefix>".
+# Customize here if you want a different naming scheme.
+[templates]
+git_push_bookmark = '"push-" ++ change_id.short()'
+
+[template-aliases]
+# Show relative timestamps like "2 hours ago" instead of full dates
+'format_timestamp(timestamp)' = 'timestamp.ago()'
+
+# Use shortest unique prefix for change/commit IDs in log output
+'format_short_id(id)' = 'id.shortest()'
+
+# ──────────────────────────────────────────────
+# Aliases
+# ──────────────────────────────────────────────
+[aliases]
+
+# Quick push: push the current change with an auto-generated bookmark name.
+# Uses the git_push_bookmark template above for naming (e.g. "push-xyzqwert").
+# Great for fast, throwaway PRs or draft pushes.
+#   Usage: jj qpush
+qpush = ["git", "push", "--change", "@"]
+
+# Named bookmark push: create a bookmark on @ and push it in one step.
+# Gives you control over the bookmark name for feature branches.
+#   Usage: jj bpush my-feature
+bpush = ["util", "exec", "--", "bash", "-c", """
+set -euo pipefail
+if [ -z "${1:-}" ]; then
+  echo "Usage: jj bpush <bookmark-name>"
+  exit 1
+fi
+jj bookmark create "$1" -r @
+jj git push --bookmark "$1"
+""", ""]
+
+# Shorthand: show the log of current branch from trunk
+l = ["log", "-r", "(trunk()..@):: | (trunk()..@)-"]
+
+# Diff of the current change
+d = ["diff"]
+
+# Show status
+s = ["status"]
+
+# ──────────────────────────────────────────────
+# Git backend settings
+# ──────────────────────────────────────────────
+[git]
+# Default remote to push to
+push = "origin"
+
+# Prevent accidental push of work-in-progress commits.
+# Any commit whose description starts with "wip:" or "private:" will be
+# rejected by `jj git push`. Remove the prefix when ready to push.
+private-commits = 'description(glob:"wip:*") | description(glob:"private:*")'
+
+# ──────────────────────────────────────────────
+# Remote settings
+# ──────────────────────────────────────────────
+[remotes.origin]
+# Automatically track all bookmarks fetched from origin.
+# Without this, you'd need to manually `jj bookmark track <name>@origin`
+# for each remote bookmark before it appears in your local state.
+auto-track-bookmarks = "*"
+
+# ──────────────────────────────────────────────
+# Working copy
+# ──────────────────────────────────────────────
+[working-copy]
+# Normalize line endings: LF in repo, platform-native in working copy
+eol-conversion = "input-output"

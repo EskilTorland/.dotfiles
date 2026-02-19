@@ -34,12 +34,6 @@ return {
 				return orig_util_open_floating_preview(contents, syntax, opts, ...)
 			end
 
-			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-			for type, icon in pairs(signs) do
-				local hl = "DiagnosticSign" .. type
-				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-			end
-
 			vim.diagnostic.config({
 				virtual_text = {
 					prefix = function(diagnostic)
@@ -55,7 +49,14 @@ return {
 						return "■"
 					end,
 				},
-				signs = true,
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = " ",
+						[vim.diagnostic.severity.WARN] = " ",
+						[vim.diagnostic.severity.INFO] = " ",
+						[vim.diagnostic.severity.HINT] = " ",
+					},
+				},
 				update_in_insert = true,
 				severity_sort = true,
 			})
@@ -76,22 +77,50 @@ return {
 			require("mason-lspconfig").setup({
 				automatic_enable = true,
 				ensure_installed = {},
-				vim.lsp.config("ts_ls", {
-					init_options = {
-						preferences = {
-							importModuleSpecifierPreference = "non-relative",
+				--   vim.lsp.config("ts_ls", {
+				--       init_options = {
+				--           preferences = {
+				--               importModuleSpecifierPreference = "non-relative",
+				--           },
+				--           plugins = {
+				--               {
+				--                   name = "@styled/typescript-styled-plugin",
+				--                   location = "/usr/local/lib/node_modules/@styled/typescript-styled-plugin",
+				--               },
+				--           },
+				--       },
+				--   }),
+
+				vim.lsp.config("vtsls", {
+					settings = {
+						vtsls = {
+							tsserver = {
+								globalPlugins = {
+									{
+										name = "@styled/typescript-styled-plugin",
+										location = "/usr/local/lib/node_modules/@styled/typescript-styled-plugin",
+										enableForWorkspaceTypeScriptVersions = true,
+									},
+								},
+							},
 						},
-						plugins = {
-							{
-								name = "@styled/typescript-styled-plugin",
-								location = "/usr/local/lib/node_modules/@styled/typescript-styled-plugin",
+						typescript = {
+							preferences = {
+								importModuleSpecifierPreference = "non-relative",
 							},
 						},
 					},
 				}),
+
 				vim.lsp.config("yamlls", {
+					on_attach = function(client, bufnr)
+						client.server_capabilities.documentFormattingProvider = false
+					end,
 					settings = {
 						yaml = {
+							format = {
+								enable = false,
+							},
 							schemaStore = {
 								enable = true,
 								url = "https://www.schemastore.org/api/json/catalog.json",
@@ -100,6 +129,20 @@ return {
 								-- kubernetes = "/*.yaml",
 								--	["https://spec.openapis.org/oas/3.0/schema/2024-10-18"] = "*.yaml",
 							},
+						},
+					},
+				}),
+
+				vim.lsp.config("roslyn", {
+					settings = {
+						["csharp|completion"] = {
+							dotnet_provide_regex_completions = true,
+							dotnet_show_completion_items_from_unimported_namespaces = true,
+							dotnet_show_name_completion_suggestions = true,
+						},
+						["csharp|background_analysis"] = {
+							dotnet_analyzer_diagnostics_scope = "fullSolution",
+							dotnet_compiler_diagnostics_scope = "fullSolution",
 						},
 					},
 				}),
