@@ -376,6 +376,13 @@
   function my_git_formatter() {
     emulate -L zsh
 
+    # Hide git status in jj-managed repos (the jj segment handles this)
+    local _dir=$PWD
+    while [[ $_dir != / ]]; do
+      [[ -d $_dir/.jj ]] && { typeset -g my_git_format=; return; }
+      _dir=${_dir:h}
+    done
+
     if [[ -n $P9K_CONTENT ]]; then
       # If P9K_CONTENT is not empty, use it. It's either "loading" or from vcs_info (not from
       # gitstatus plugin). VCS_STATUS_* parameters are not available in this case.
@@ -1676,7 +1683,7 @@
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%246Fat '
 
   #####################[ jj: jujutsu vcs status ]#####################
-  # Shows the current jj change ID, bookmarks, and status flags when inside a jj repo.
+  # Shows the current jj change ID, bookmarks, status flags, and file change counts.
   function prompt_jj() {
     # Fast check: walk up to find .jj directory
     local dir=$PWD
@@ -1686,7 +1693,7 @@
     done
     [[ -d $dir/.jj ]] || return
 
-    # Query jj for current change info (~23ms with --ignore-working-copy)
+    # Query jj for current change info + diff summary in a single call (~23ms)
     local jj_info
     jj_info=$(jj log --no-pager -r @ --no-graph --ignore-working-copy \
       -T 'change_id.shortest() ++ "\n"
@@ -1694,7 +1701,8 @@
           ++ if(conflict, "true", "false") ++ "\n"
           ++ if(empty, "true", "false") ++ "\n"
           ++ if(divergent, "true", "false") ++ "\n"
-          ++ description.first_line() ++ "\n"' 2>/dev/null) || return
+          ++ description.first_line() ++ "\n"
+          ++ self.diff().summary()' 2>/dev/null) || return
 
     local -a lines=("${(@f)jj_info}")
     local change_id=$lines[1]
@@ -1704,10 +1712,22 @@
     local is_divergent=$lines[5]
     local description=$lines[6]
 
+    # Count modified/added/deleted files from diff summary (lines 7+)
+    local num_modified=0 num_added=0 num_deleted=0
+    local line
+    for line in "${lines[@]:6}"; do
+      case $line in
+        M\ *) (( num_modified++ )) ;;
+        A\ *) (( num_added++ )) ;;
+        D\ *) (( num_deleted++ )) ;;
+      esac
+    done
+
     local res=""
     local meta='%246F'
     local clean='%76F'
     local modified='%178F'
+    local untracked='%39F'
     local warning='%196F'
 
     # Change ID (always shown)
@@ -1717,6 +1737,11 @@
     if [[ -n $bookmarks ]]; then
       res+=" ${meta}on ${clean}${bookmarks}"
     fi
+
+    # File change counts (matches git vcs style: +added !modified -deleted)
+    (( num_added    )) && res+=" ${untracked}+${num_added}"
+    (( num_modified )) && res+=" ${modified}!${num_modified}"
+    (( num_deleted  )) && res+=" ${warning}-${num_deleted}"
 
     # Flags
     [[ $is_empty == true ]] && res+=" ${modified}∅"
