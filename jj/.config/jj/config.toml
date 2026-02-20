@@ -105,5 +105,11 @@ auto-track-bookmarks = "*"
 # Working copy
 # ──────────────────────────────────────────────
 [working-copy]
-# Normalize line endings: LF in repo, platform-native in working copy
 eol-conversion = "input-output"
+# ──────────────────────────────────────────────
+# Snapshot settings
+# ──────────────────────────────────────────────
+[snapshot]
+# Allow snapshotting files up to 2MiB (default is 1MiB).
+# Prevents errors when working with larger config files like .p10k.zsh (~90KB).
+max-new-file-size = "2MiB"
