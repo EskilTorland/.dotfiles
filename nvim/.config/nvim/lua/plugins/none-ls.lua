@@ -1,4 +1,3 @@
---TODO: Swap with oil.nvim
 return {
 	{
 		"nvimtools/none-ls.nvim",
