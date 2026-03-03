@@ -31,6 +31,11 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.colorcolumn = ""
 
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "cs",
 	callback = function()

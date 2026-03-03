@@ -71,6 +71,7 @@ return {
 				},
 			},
 			gitbrowse = {},
+			input = {},
 		},
 		keys = {
 			{

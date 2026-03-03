@@ -19,6 +19,12 @@ return {
 					--vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
 					vim.keymap.set("n", "rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
 					--	vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
+
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client:supports_method("textDocument/foldingRange") then
+						local win = vim.api.nvim_get_current_win()
+						vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+					end
 				end,
 			})
 
