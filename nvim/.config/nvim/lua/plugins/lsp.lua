@@ -25,6 +25,12 @@ return {
 						local win = vim.api.nvim_get_current_win()
 						vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
 					end
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = event.buf,
+						callback = function()
+							vim.lsp.buf.format()
+						end,
+					})
 				end,
 			})
 
@@ -122,13 +128,10 @@ return {
 				}),
 
 				vim.lsp.config("yamlls", {
-					on_attach = function(client, bufnr)
-						client.server_capabilities.documentFormattingProvider = false
-					end,
 					settings = {
 						yaml = {
 							format = {
-								enable = false,
+								enable = true,
 							},
 							schemaStore = {
 								enable = true,

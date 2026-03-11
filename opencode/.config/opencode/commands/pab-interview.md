@@ -1,6 +1,6 @@
 ---
 description: Interview me to refine the current plan
-agent: interviewer
+agent: pab-interviewer
 ---
 
 Read the plan in `.opencode/plans/plan.md` and interview me about it. Ask

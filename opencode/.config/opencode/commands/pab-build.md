@@ -1,6 +1,6 @@
 ---
 description: Implement the current plan using architect/implementer/reviewer
-agent: builder
+agent: pab-builder
 ---
 
 Read the plan in `.opencode/plans/plan.md` and implement it. For each feature
