@@ -1,6 +1,6 @@
 ---
 description: Start Plan-Ask-Build workflow by creating a plan
-agent: planner
+agent: pab-planner
 ---
 
 Research the codebase and create a detailed implementation plan for the

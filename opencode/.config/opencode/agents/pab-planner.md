@@ -5,6 +5,7 @@ color: "#fabd2f"
 tools:
   edit: false
   bash: false
+  question: true
 permission:
   task:
     "*": deny
