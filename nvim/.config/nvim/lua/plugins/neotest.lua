@@ -6,6 +6,7 @@ return {
 			"nvim-lua/plenary.nvim",
 			"antoinemadec/FixCursorHold.nvim",
 			"Issafalcon/neotest-dotnet",
+			"fredrikaverpil/neotest-golang",
 		},
 		keys = {
 			{
@@ -87,12 +88,15 @@ return {
 		config = function()
 			require("neotest").setup({
 				adapters = {
-					require("neotest-dotnet")({
-						custom_attributes = {
-							xunit = { "Fact", "Theory", "InlineData", "ClassData" },
-						},
-						discovery_root = "solution",
-					}),
+				require("neotest-dotnet")({
+					custom_attributes = {
+						xunit = { "Fact", "Theory", "InlineData", "ClassData" },
+					},
+					discovery_root = "solution",
+				}),
+				require("neotest-golang")({
+					dap_go_enabled = true,
+				}),
 				},
 			})
 		end,

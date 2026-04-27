@@ -43,7 +43,30 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "json", "jsonc" },
+	callback = function()
+		vim.opt_local.tabstop = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.expandtab = true
+	end,
+})
+
 vim.g.netrw_preview = 1
+
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function()
+		pcall(vim.treesitter.start)
+	end,
+})
+
+vim.filetype.add({
+	extension = {
+		tf = "terraform",
+		tfvars = "terraform-vars",
+	},
+})
 
 vim.highlight.priorities.semantic_tokens = 95
 
