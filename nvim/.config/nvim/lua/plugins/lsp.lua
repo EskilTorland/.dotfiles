@@ -143,9 +143,18 @@ return {
 							},
 						},
 					},
-				}),
+			}),
 
-				vim.lsp.config("roslyn", {
+			vim.lsp.config("jsonls", {
+				settings = {
+					json = {
+						format = { enable = true },
+						validate = { enable = true },
+					},
+				},
+			}),
+
+			vim.lsp.config("roslyn", {
 					settings = {
 						["csharp|completion"] = {
 							dotnet_provide_regex_completions = true,

@@ -30,11 +30,7 @@
         },
         "figma": {
             "type": "remote",
-            "url": "https://mcp.figma.com/mcp",
-            "oauth": {
-                "clientId": "7vT7rs1tXyBubVkvIj4fzG",
-                "clientSecret": "lBg7kHYidqSODeOZfy9a9NRwZsk6hA"
-            }
+            "url": "https://mcp.figma.com/mcp"
         },
         "playwright": {
             "type": "local",
@@ -55,10 +51,6 @@
         "atlassian": {
             "type": "remote",
             "url": "https://mcp.atlassian.com/v1/mcp"
-        },
-        "datadog": {
-            "type": "remote",
-            "url": "https://mcp.datadoghq.eu/api/unstable/mcp-server/mcp"
         },
         "github": {
             "enabled": true,
