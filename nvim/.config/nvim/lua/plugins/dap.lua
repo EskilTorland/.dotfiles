@@ -129,33 +129,23 @@ return {
 			},
 		},
 		config = function()
-			-- Define DAP signs
-
 			vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
 
 			local dap_signs = {
 				Stopped = { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine" },
-				Breakpoint = { text = " ", texthl = "DiagnosticError" },
-				BreakpointCondition = { text = " ", texthl = "DiagnosticWarn" },
-				BreakpointRejected = { text = " ", texthl = "DiagnosticError" },
+				Breakpoint = { text = " ", texthl = "DiagnosticError" },
+				BreakpointCondition = { text = " ", texthl = "DiagnosticWarn" },
+				BreakpointRejected = { text = " ", texthl = "DiagnosticError" },
 				LogPoint = { text = ".>", texthl = "DiagnosticInfo" },
 			}
 
-			-- Register the signs with Neovim
 			for name, sign in pairs(dap_signs) do
 				vim.fn.sign_define("Dap" .. name, sign)
 			end
 
-			-- setup dap config by VsCode launch.json file
-			local vscode = require("dap.ext.vscode")
-			local json = require("plenary.json")
-			vscode.json_decode = function(str)
-				return vim.json.decode(json.json_strip_comments(str))
-			end
-
 			local dap = require("dap")
 			if not dap.adapters["netcoredbg"] then
-				require("dap").adapters["netcoredbg"] = {
+				dap.adapters["netcoredbg"] = {
 					type = "executable",
 					command = vim.fn.stdpath("data") .. "/lazy/netcoredbg-macOS-arm64.nvim/netcoredbg/netcoredbg",
 					args = { "--interpreter=vscode" },
@@ -165,7 +155,16 @@ return {
 				}
 			end
 
-			--	vscode.load_launchjs(nil, { netcoredbg = { "cs", "fsharp", "vb" } })
+			dap.configurations.cs = dap.configurations.cs or {}
+			table.insert(dap.configurations.cs, {
+				type = "netcoredbg",
+				name = "Launch (integratedTerminal)",
+				request = "launch",
+				console = "integratedTerminal",
+				program = function()
+					return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/", "file")
+				end,
+			})
 		end,
 	},
 }

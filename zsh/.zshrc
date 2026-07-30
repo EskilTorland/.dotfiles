@@ -166,3 +166,11 @@ fi
 export ASPNETCORE_ENVIRONMENT=Development
 
 export GITHUB_TOKEN=$(gh auth token)
+
+export FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT=true
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/eskil/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+alias glog="git log --oneline --graph --decorate --all"

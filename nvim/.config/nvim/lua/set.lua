@@ -22,6 +22,8 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
+vim.opt.timeoutlen = 300
+
 vim.opt.spell = true
 vim.opt.spelllang = "en_us"
 
@@ -31,35 +33,20 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.colorcolumn = ""
 
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "cs",
-	callback = function()
-		vim.opt.expandtab = true -- or any other specific settings
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "json", "jsonc" },
 	callback = function()
-		vim.opt_local.tabstop = 2
-		vim.opt_local.softtabstop = 2
-		vim.opt_local.shiftwidth = 2
+		vim.opt_local.tabstop = 4
+		vim.opt_local.softtabstop = 4
+		vim.opt_local.shiftwidth = 4
 		vim.opt_local.expandtab = true
 	end,
 })
 
 vim.g.netrw_preview = 1
-
-vim.api.nvim_create_autocmd("FileType", {
-	callback = function()
-		pcall(vim.treesitter.start)
-	end,
-})
 
 vim.filetype.add({
 	extension = {

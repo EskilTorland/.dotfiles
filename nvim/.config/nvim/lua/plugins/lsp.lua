@@ -1,8 +1,7 @@
---TODO: Look over keybinds for best practices, add gutter signs, figure out minidiff
---add snacks.nvim look at defaults for inspo eg lazy, mini etc
 return {
 	{
 		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
@@ -15,27 +14,39 @@ return {
 					vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
 					--vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
 					--vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-					vim.keymap.set("n", "ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+					vim.keymap.set(
+						"n",
+						"<leader>ca",
+						vim.lsp.buf.code_action,
+						{ buffer = event.buf, desc = "Code action" }
+					)
 					--vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
-					vim.keymap.set("n", "rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+					vim.keymap.set(
+						"n",
+						"<leader>rn",
+						vim.lsp.buf.rename,
+						{ buffer = event.buf, desc = "Rename symbol" }
+					)
 					--	vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
 
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client:supports_method("textDocument/foldingRange") then
+					local slow_fold_servers = { "terraformls" }
+					if
+						client:supports_method("textDocument/foldingRange")
+						and not vim.tbl_contains(slow_fold_servers, client.name)
+					then
 						local win = vim.api.nvim_get_current_win()
+						vim.wo[win][0].foldmethod = "expr"
 						vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
 					end
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = event.buf,
-						callback = function()
-							vim.lsp.buf.format()
-						end,
-					})
 				end,
 			})
 
 			local lspconfig_defaults = require("lspconfig").util.default_config
 			lspconfig_defaults.capabilities = require("blink.cmp").get_lsp_capabilities(lspconfig_defaults.capabilities)
+			vim.lsp.config("*", {
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
+			})
 
 			local border = "rounded"
 
@@ -78,7 +89,7 @@ return {
 			vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { fg = "#48cae4", italic = true })
 			vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#95e1d3", italic = true })
 
-			vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
+			vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
 
 			require("mason").setup({
 				registries = {
@@ -87,8 +98,10 @@ return {
 				},
 			})
 			require("mason-lspconfig").setup({
-				automatic_enable = true,
-				ensure_installed = {},
+				automatic_enable = {
+					exclude = { "terraformls" },
+				},
+				ensure_installed = { "eslint" },
 				--   vim.lsp.config("ts_ls", {
 				--       init_options = {
 				--           preferences = {
@@ -102,6 +115,20 @@ return {
 				--           },
 				--       },
 				--   }),
+
+			vim.lsp.config("terraformls", {
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
+				on_attach = function(client)
+					client.server_capabilities.semanticTokensProvider = nil
+				end,
+				settings = {
+					["terraform-ls"] = {
+						indexing = {
+							ignoreDirectoryNames = { ".terraform" },
+						},
+					},
+				},
+			}),
 
 				vim.lsp.config("vtsls", {
 					on_attach = function(client, bufnr)
@@ -143,18 +170,47 @@ return {
 							},
 						},
 					},
-			}),
+				}),
 
-			vim.lsp.config("jsonls", {
-				settings = {
-					json = {
-						format = { enable = true },
-						validate = { enable = true },
+				vim.lsp.config("jsonls", {
+					settings = {
+						json = {
+							format = { enable = true },
+							validate = { enable = true },
+						},
 					},
-				},
-			}),
+				}),
 
-			vim.lsp.config("roslyn", {
+				vim.lsp.config("pyright", {
+					before_init = function(_, config)
+						local venv_path = vim.fs.find({ ".venv", "venv" }, {
+							path = config.root_dir,
+							type = "directory",
+							upward = false,
+						})[1]
+						if venv_path then
+							config.settings = config.settings or {}
+							config.settings.python = config.settings.python or {}
+							config.settings.python.pythonPath = vim.fs.joinpath(venv_path, "bin", "python")
+						end
+					end,
+					settings = {
+						python = {
+							analysis = {
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+							},
+						},
+					},
+				}),
+
+				vim.lsp.config("roslyn", {
+					cmd = {
+						vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin", "roslyn"),
+						"--logLevel=Information",
+						"--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+						"--stdio",
+					},
 					settings = {
 						["csharp|completion"] = {
 							dotnet_provide_regex_completions = true,
@@ -170,9 +226,21 @@ return {
 
 				vim.lsp.config("shopify_theme_ls", {
 					root_dir = function()
-						return vim.loop.cwd() -- Use the current working directory as the root
+						return vim.uv.cwd()
 					end,
 				}),
+			})
+
+			-- Deferred terraform-ls: start after buffer is rendered to avoid freeze
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "terraform", "terraform-vars" },
+				callback = function(ev)
+					vim.defer_fn(function()
+						if vim.api.nvim_buf_is_valid(ev.buf) then
+							vim.lsp.enable("terraformls")
+						end
+					end, 100)
+				end,
 			})
 		end,
 	},

@@ -8,10 +8,10 @@ return {
 		config = function()
 			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter.configs").setup({
-				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "c_sharp", "markdown", "markdown_inline", "go", "gomod", "gowork", "gosum", "json", "yaml" },
+				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "c_sharp", "markdown", "markdown_inline", "go", "gomod", "gowork", "gosum", "json", "yaml", "hcl", "terraform" },
 				sync_install = false,
 				auto_install = true,
-				highlight = { enable = false },
+				highlight = { enable = true },
 			})
 
 			-- nvim-treesitter's query_predicates.lua is broken on Neovim 0.12:

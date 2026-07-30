@@ -8,6 +8,7 @@ return {
 			"nvim-tree/nvim-web-devicons",
 		},
 
+		event = { "InsertEnter", "CmdlineEnter" },
 		version = "*",
 		opts = {
 
@@ -29,6 +30,19 @@ return {
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
+			},
+
+			signature = {
+				enabled = true,
+				window = {
+					border = "rounded",
+					treesitter_highlighting = true,
+					show_documentation = true,
+				},
+			},
+
+			fuzzy = {
+				sorts = { "exact", "score", "sort_text" },
 			},
 
 			sources = {
@@ -55,6 +69,11 @@ return {
 				},
 			},
 			completion = {
+				ghost_text = {
+					enabled = true,
+					show_with_menu = false,
+					show_without_menu = true,
+				},
 				documentation = {
 					auto_show = true,
 					window = {

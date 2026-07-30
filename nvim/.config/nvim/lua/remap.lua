@@ -13,12 +13,26 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 --vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "ø", "[", { remap = true })
-vim.keymap.set("n", "æ", "]", { remap = true })
+vim.opt.langmap = "ø[,æ],Ø{,Æ}"
+
+vim.keymap.set({ "x", "o" }, "iæ", "i]", { remap = true, desc = "Inside []" })
+vim.keymap.set({ "x", "o" }, "aæ", "a]", { remap = true, desc = "Around []" })
+vim.keymap.set({ "x", "o" }, "iø", "i[", { remap = true, desc = "Inside []" })
+vim.keymap.set({ "x", "o" }, "aø", "a[", { remap = true, desc = "Around []" })
+vim.keymap.set({ "x", "o" }, "iÆ", "i}", { remap = true, desc = "Inside {}" })
+vim.keymap.set({ "x", "o" }, "aÆ", "a}", { remap = true, desc = "Around {}" })
+vim.keymap.set({ "x", "o" }, "iØ", "i{", { remap = true, desc = "Inside {}" })
+vim.keymap.set({ "x", "o" }, "aØ", "a{", { remap = true, desc = "Around {}" })
 
 -- Exit terminal mode with Escape key
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+
+vim.keymap.set("n", "]d", function()
+	vim.diagnostic.jump({ count = 1 })
+end, { desc = "Next diagnostic" })
+vim.keymap.set("n", "[d", function()
+	vim.diagnostic.jump({ count = -1 })
+end, { desc = "Prev diagnostic" })
