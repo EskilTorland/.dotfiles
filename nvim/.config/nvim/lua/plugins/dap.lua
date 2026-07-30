@@ -133,9 +133,9 @@ return {
 
 			local dap_signs = {
 				Stopped = { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine" },
-				Breakpoint = { text = " ", texthl = "DiagnosticError" },
-				BreakpointCondition = { text = " ", texthl = "DiagnosticWarn" },
-				BreakpointRejected = { text = " ", texthl = "DiagnosticError" },
+				Breakpoint = { text = " ", texthl = "DiagnosticError" },
+				BreakpointCondition = { text = " ", texthl = "DiagnosticWarn" },
+				BreakpointRejected = { text = " ", texthl = "DiagnosticError" },
 				LogPoint = { text = ".>", texthl = "DiagnosticInfo" },
 			}
 

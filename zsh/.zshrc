@@ -64,7 +64,8 @@ _fzf_git_fzf() {
 
 # Bat configuration
 #export BAT_THEME="gruvbox-dark"
-export BAT_THEME="kanagawa-dragon"
+export BAT_THEME="kanagawa"
+# export BAT_THEME="Catppuccin Mocha"
 
 # Eza (better ls) configuration
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
@@ -110,7 +111,7 @@ _fzf_comprun() {
                                                                                                      
          if read -q 'choice?Create/attach tmux session? (y/n): '; then                               
              echo # Add a newline after the response                                                 
-             local session_name=$(basename "$project_dir")                                           
+             local session_name=$(basename "$project_dir" | sed 's/^\.//')                                           
              # Check if we're already in a tmux session                                              
              if [ -n "$TMUX" ]; then                                                                 
                  # We're in a tmux session, create a new one                                         

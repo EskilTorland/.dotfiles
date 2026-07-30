@@ -5,7 +5,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			local colors = {
-				bg = "none",
+				bg = "#1F1F28", -- kanagawa-wave background
 				fg = "#bbc2cf",
 				yellow = "#ECBE7B",
 				cyan = "#008080",
@@ -32,32 +32,24 @@ return {
 				end,
 			}
 
-			-- Config
 			local config = {
 				options = {
-					-- Disable sections and component separators
 					component_separators = "",
 					section_separators = "",
 					theme = {
-						-- We are going to use lualine_c an lualine_x as left and
-						-- right section. Both are highlighted by c theme .  So we
-						-- are just setting default looks o statusline
 						normal = { c = { fg = colors.fg, bg = colors.bg } },
 						inactive = { c = { fg = colors.fg, bg = colors.bg } },
 					},
 				},
 				sections = {
-					-- these are to remove the defaults
 					lualine_a = {},
 					lualine_b = {},
 					lualine_y = {},
 					lualine_z = {},
-					-- These will be filled later
 					lualine_c = {},
 					lualine_x = {},
 				},
 				inactive_sections = {
-					-- these are to remove the defaults
 					lualine_a = {},
 					lualine_b = {},
 					lualine_y = {},
@@ -67,12 +59,10 @@ return {
 				},
 			}
 
-			-- Inserts a component in lualine_c at left section
 			local function ins_left(component)
 				table.insert(config.sections.lualine_c, component)
 			end
 
-			-- Inserts a component in lualine_x at right section
 			local function ins_right(component)
 				table.insert(config.sections.lualine_x, component)
 			end
@@ -85,7 +75,6 @@ return {
 			})
 
 			ins_left({
-				-- mode component
 				function()
 					local mode_map = {
 						n = "Normal",
@@ -109,10 +98,9 @@ return {
 						["!"] = "Shell",
 						t = "Terminal",
 					}
-					return mode_map[vim.fn.mode()] .. " "
+					return mode_map[vim.fn.mode()] .. " "
 				end,
 				color = function()
-					-- auto change color according to neovims mode
 					local mode_color = {
 						n = colors.red,
 						i = colors.green,
@@ -147,7 +135,6 @@ return {
 			})
 
 			ins_left({
-				-- filesize component
 				"filetype",
 				cond = conditions.buffer_not_empty,
 			})
@@ -173,10 +160,9 @@ return {
 				color = { fg = "#ffffff", gui = "bold" },
 			})
 
-			-- Add components to right sections
 			ins_left({
-				"o:encoding", -- option component same as &encoding in viml
-				fmt = string.upper, -- I'm not sure why it's upper case either ;)
+				"o:encoding",
+				fmt = string.upper,
 				cond = conditions.hide_in_width,
 				color = { fg = colors.green, gui = "bold" },
 			})
@@ -196,7 +182,6 @@ return {
 
 			ins_left({
 				"diff",
-				-- Is it me or the symbol for modified us really weird
 				symbols = { added = " ", modified = "󰝤 ", removed = " " },
 				diff_color = {
 					added = { fg = colors.green },
