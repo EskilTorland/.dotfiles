@@ -4,6 +4,18 @@ return {
 
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
+		cmd = "Neotree",
+		keys = {
+			{ "<leader>pv", "<cmd>Neotree position=current toggle<cr>", desc = "Toggle Neotree", silent = true },
+		},
+		init = function()
+			if vim.fn.argc(-1) == 1 then
+				local stat = vim.uv.fs_stat(vim.fn.argv(0))
+				if stat and stat.type == "directory" then
+					require("neo-tree")
+				end
+			end
+		end,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
@@ -27,7 +39,6 @@ return {
 					hijack_netrw_behavior = "open_current",
 				},
 			})
-			vim.keymap.set("n", "<leader>pv", ":Neotree position=current toggle<CR>", { silent = true })
 		end,
 	},
 }

@@ -1,4 +1,3 @@
---#TODO: vise fullstending sti, lage dashbord, fikse tmux ui, mer snacks
 return {
 	{
 		"folke/snacks.nvim",
@@ -70,8 +69,13 @@ return {
 					},
 				},
 			},
-			gitbrowse = {},
-			input = {},
+		gitbrowse = {},
+		input = {},
+		words = { enabled = true },
+		scope = { enabled = true },
+		bigfile = { size = 1.5 * 1024 * 1024 },
+		quickfile = {},
+		toggle = {},
 		},
 		keys = {
 			{
@@ -165,6 +169,51 @@ return {
 					Snacks.gitbrowse()
 				end,
 				desc = "Github file",
+			},
+			{
+				"<leader>ud",
+				function()
+					Snacks.toggle.diagnostics():toggle()
+				end,
+				desc = "Toggle Diagnostics",
+			},
+			{
+				"<leader>uh",
+				function()
+					Snacks.toggle.inlay_hints():toggle()
+				end,
+				desc = "Toggle Inlay Hints",
+			},
+			{
+				"<leader>uT",
+				function()
+					Snacks.toggle.treesitter():toggle()
+				end,
+				desc = "Toggle Treesitter",
+			},
+			{
+				"<leader>bd",
+				function()
+					Snacks.bufdelete()
+				end,
+				desc = "Delete Buffer",
+			},
+			{
+				"[b",
+				function()
+					Snacks.picker.buffers({ current = false })
+				end,
+				desc = "Prev Buffer",
+			},
+			{
+				"]b",
+				"<cmd>bnext<cr>",
+				desc = "Next Buffer",
+			},
+			{
+				"[b",
+				"<cmd>bprevious<cr>",
+				desc = "Prev Buffer",
 			},
 		},
 	},
