@@ -4,6 +4,7 @@ return {
 		priority = 1000,
 		lazy = false,
 		opts = {
+			gh = {},
 			dashboard = {
 				sections = {
 					{ section = "header" },
@@ -68,14 +69,19 @@ return {
 						truncate = 60,
 					},
 				},
+				sources = {
+					gh_diff = {
+						layout = { preset = "sidebar" },
+					},
+				},
 			},
-		gitbrowse = {},
-		input = {},
-		words = { enabled = true },
-		scope = { enabled = true },
-		bigfile = { size = 1.5 * 1024 * 1024 },
-		quickfile = {},
-		toggle = {},
+			gitbrowse = {},
+			input = {},
+			words = { enabled = true },
+			scope = { enabled = true },
+			bigfile = { size = 1.5 * 1024 * 1024 },
+			quickfile = {},
+			toggle = {},
 		},
 		keys = {
 			{
@@ -162,6 +168,34 @@ return {
 					Snacks.picker.command_history()
 				end,
 				desc = "Command History",
+			},
+			{
+				"<leader>gi",
+				function()
+					Snacks.picker.gh_issue()
+				end,
+				desc = "GitHub Issues (open)",
+			},
+			{
+				"<leader>gI",
+				function()
+					Snacks.picker.gh_issue({ state = "all" })
+				end,
+				desc = "GitHub Issues (all)",
+			},
+			{
+				"<leader>gp",
+				function()
+					Snacks.picker.gh_pr()
+				end,
+				desc = "GitHub PRs (open)",
+			},
+			{
+				"<leader>gP",
+				function()
+					Snacks.picker.gh_pr({ state = "all" })
+				end,
+				desc = "GitHub PRs (all)",
 			},
 			{
 				"<leader>go",

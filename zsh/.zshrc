@@ -63,7 +63,8 @@ _fzf_git_fzf() {
 }
 
 # Bat configuration
-export BAT_THEME="gruvbox-dark"
+#export BAT_THEME="gruvbox-dark"
+export BAT_THEME="kanagawa-dragon"
 
 # Eza (better ls) configuration
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
@@ -174,3 +175,6 @@ export PATH="/Users/eskil/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 alias glog="git log --oneline --graph --decorate --all"
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
