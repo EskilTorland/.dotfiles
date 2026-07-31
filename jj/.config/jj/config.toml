@@ -74,6 +74,17 @@ jj git push --bookmark "$1"
 # Shorthand: show the log of current branch from trunk
 l = ["log", "-r", "(trunk()..@):: | (trunk()..@)-"]
 
+desc = ["util", "exec", "--", "bash", "-c", """
+set -euo pipefail
+jj describe "$@"
+if command -v pre-commit &>/dev/null && [ -f .pre-commit-config.yaml ]; then
+  if ! jj run pre-commit; then
+    jj undo
+    exit 1
+  fi
+fi
+""", ""]
+
 # Diff of the current change
 d = ["diff"]
 
