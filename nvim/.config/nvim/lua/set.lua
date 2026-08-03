@@ -24,6 +24,9 @@ vim.opt.termguicolors = true
 
 vim.opt.timeoutlen = 300
 
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 vim.opt.spell = true
 vim.opt.spelllang = "en_us"
 
