@@ -17,6 +17,11 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 ZSH_DISABLE_COMPFIX=true
+
+# Cache compinit dump for fast startup (rebuilds only when stale)
+export ZSH_COMPDUMP="${HOME}/.cache/zsh/.zcompdump-${ZSH_VERSION}"
+[[ -d "${HOME}/.cache/zsh" ]] || mkdir -p "${HOME}/.cache/zsh"
+
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-completions)
 
 export LANG=en_US@UTF-8
@@ -176,6 +181,7 @@ export PATH="/Users/eskil/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 alias glog="git log --oneline --graph --decorate --all"
+alias compfix="rm -f ~/.cache/zsh/.zcompdump-* && exec zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/.p10k.zsh.
 [[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
