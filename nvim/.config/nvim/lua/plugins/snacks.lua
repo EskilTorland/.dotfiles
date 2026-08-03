@@ -5,6 +5,7 @@ return {
 		lazy = false,
 		opts = {
 			gh = {},
+			explorer = {},
 			dashboard = {
 				sections = {
 					{ section = "header" },
@@ -84,6 +85,20 @@ return {
 			toggle = {},
 		},
 		keys = {
+			{
+				"<leader>pt",
+				function()
+					Snacks.explorer()
+				end,
+				desc = "Toggle Explorer",
+			},
+			{
+				"<leader>pt",
+				function()
+					Snacks.explorer()
+				end,
+				desc = "File Explorer",
+			},
 			{
 				"<leader>ff",
 				function()
