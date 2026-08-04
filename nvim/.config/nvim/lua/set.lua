@@ -49,8 +49,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.g.netrw_preview = 1
-
 vim.filetype.add({
 	extension = {
 		tf = "terraform",
@@ -59,11 +57,3 @@ vim.filetype.add({
 })
 
 vim.highlight.priorities.semantic_tokens = 95
-
--- vim.api.nvim_create_autocmd("FileType", {
---     pattern = "netrw",
---     callback = function()
---         local map_opts ={noremap = true,
---         silent = true,
---         buffer = true}
--- })

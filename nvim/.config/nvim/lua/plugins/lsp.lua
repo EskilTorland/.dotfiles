@@ -12,22 +12,18 @@ return {
 				callback = function(event)
 					local opts = { buffer = event.buf }
 					vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
-					--vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-					--vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
 					vim.keymap.set(
 						"n",
 						"<leader>ca",
 						vim.lsp.buf.code_action,
 						{ buffer = event.buf, desc = "Code action" }
 					)
-					--vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
 					vim.keymap.set(
 						"n",
 						"<leader>rn",
 						vim.lsp.buf.rename,
 						{ buffer = event.buf, desc = "Rename symbol" }
 					)
-					--	vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
 
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					local slow_fold_servers = { "terraformls" }
@@ -102,19 +98,6 @@ return {
 					exclude = { "terraformls" },
 				},
 				ensure_installed = { "eslint" },
-				--   vim.lsp.config("ts_ls", {
-				--       init_options = {
-				--           preferences = {
-				--               importModuleSpecifierPreference = "non-relative",
-				--           },
-				--           plugins = {
-				--               {
-				--                   name = "@styled/typescript-styled-plugin",
-				--                   location = "/usr/local/lib/node_modules/@styled/typescript-styled-plugin",
-				--               },
-				--           },
-				--       },
-				--   }),
 
 			vim.lsp.config("terraformls", {
 				capabilities = require("blink.cmp").get_lsp_capabilities(),

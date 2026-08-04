@@ -53,11 +53,15 @@ return {
 					args = { "csharpier", "format", "--write-stdout", "--stdin-path", "$FILENAME" },
 					stdin = true,
 					condition = function(_, ctx)
-						local manifest = vim.fs.find(".config/dotnet-tools.json", {
+						local git_root = vim.fs.find(".git", {
 							path = ctx.dirname,
 							upward = true,
 						})[1]
-						if not manifest then
+						if not git_root then
+							return false
+						end
+						local manifest = vim.fs.dirname(git_root) .. "/.config/dotnet-tools.json"
+						if vim.fn.filereadable(manifest) == 0 then
 							return false
 						end
 						local content = vim.fn.readfile(manifest)
