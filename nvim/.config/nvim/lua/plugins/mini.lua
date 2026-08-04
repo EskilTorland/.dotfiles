@@ -4,7 +4,12 @@ return {
 		version = false,
 		event = "VeryLazy",
 	config = function()
-		require("mini.ai").setup()
+		require("mini.ai").setup({
+			custom_textobjects = {
+				f = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+				F = require("mini.ai").gen_spec.function_call(),
+			},
+		})
 		require("mini.pairs").setup()
 			require("mini.surround").setup()
 			require("mini.diff").setup()

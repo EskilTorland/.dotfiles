@@ -58,6 +58,29 @@ return {
 
 			{ "a", group = "Around", mode = { "o", "x" } },
 			{ "i", group = "Inside", mode = { "o", "x" } },
+
+			-- Treesitter textobjects
+			{ "af", desc = "Around function", mode = { "o", "x" } },
+			{ "if", desc = "Inside function", mode = { "o", "x" } },
+			{ "ac", desc = "Around class", mode = { "o", "x" } },
+			{ "ic", desc = "Inside class", mode = { "o", "x" } },
+			{ "aa", desc = "Around argument", mode = { "o", "x" } },
+			{ "ia", desc = "Inside argument", mode = { "o", "x" } },
+			{ "ai", desc = "Around conditional", mode = { "o", "x" } },
+			{ "ii", desc = "Inside conditional", mode = { "o", "x" } },
+			{ "al", desc = "Around loop", mode = { "o", "x" } },
+			{ "il", desc = "Inside loop", mode = { "o", "x" } },
+
+			-- mini.ai textobjects
+			{ "aF", desc = "Around function call", mode = { "o", "x" } },
+			{ "iF", desc = "Inside function call", mode = { "o", "x" } },
+			{ "ab", desc = "Around brackets", mode = { "o", "x" } },
+			{ "ib", desc = "Inside brackets", mode = { "o", "x" } },
+			{ "aq", desc = "Around quotes", mode = { "o", "x" } },
+			{ "iq", desc = "Inside quotes", mode = { "o", "x" } },
+			{ "at", desc = "Around tag", mode = { "o", "x" } },
+			{ "it", desc = "Inside tag", mode = { "o", "x" } },
+
 			{ "gh", desc = "Diff hunk", mode = { "o", "x" } },
 			},
 		},
