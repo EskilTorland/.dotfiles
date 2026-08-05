@@ -90,13 +90,6 @@ return {
 				function()
 					Snacks.explorer()
 				end,
-				desc = "Toggle Explorer",
-			},
-			{
-				"<leader>pt",
-				function()
-					Snacks.explorer()
-				end,
 				desc = "File Explorer",
 			},
 			{
@@ -259,11 +252,19 @@ return {
 				"<cmd>bnext<cr>",
 				desc = "Next Buffer",
 			},
-			{
-				"[b",
-				"<cmd>bprevious<cr>",
-				desc = "Prev Buffer",
-			},
+		{
+			"[b",
+			"<cmd>bprevious<cr>",
+			desc = "Prev Buffer",
 		},
+		{
+			"<C-t>",
+			function()
+				Snacks.terminal()
+			end,
+			desc = "Toggle Terminal",
+			mode = { "n", "t" },
+		},
+	},
 	},
 }
