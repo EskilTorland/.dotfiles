@@ -22,8 +22,6 @@ vim.keymap.set({ "x", "o" }, "aÆ", "a}", { remap = true, desc = "Around {}" })
 vim.keymap.set({ "x", "o" }, "iØ", "i{", { remap = true, desc = "Inside {}" })
 vim.keymap.set({ "x", "o" }, "aØ", "a{", { remap = true, desc = "Around {}" })
 
--- Exit terminal mode with Escape key
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "]d", function()
 	vim.diagnostic.jump({ count = 1 })
